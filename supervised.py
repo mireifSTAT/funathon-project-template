@@ -5,7 +5,6 @@
 # Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-1-import-libraries-and-load-environment-variables
 
 from dotenv import load_dotenv
-import mlflow
 
 load_dotenv(override=True)
 
@@ -95,5 +94,115 @@ value_encoder = ValueEncoder(label_encoder=encoder)
 # %%
 # Question 1 - Train the tokenizer and inspect a sample
 # Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-1-train-the-tokenizer-and-inspect-a-sample
+
+from torchTextClassifiers.tokenizers import WordPieceTokenizer
+
+tokenizer = WordPieceTokenizer(
+    vocab_size=5000,
+    output_dim=10
+)
+
+tokenizer.train(X_train)
+
+print("Output tensor size:", tokenizer.tokenize(X_train[0]).input_ids.shape)
+print("Vocabulary size:", tokenizer.vocab_size)
+
+# Look at an example of tokenization
+print("Raw text:", X_train[0])
+print(
+    "Tokens id:",
+    tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
+)
+print(
+    "Tokens:",
+    tokenizer.tokenizer.convert_ids_to_tokens(
+        tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
+    )
+)
+# 6. Training
+
+# %%
+# Question 1 - Create the classifier
+# Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-1-create-the-classifier
+
+from torchTextClassifiers import ModelConfig, torchTextClassifiers
+
+embedding_dim = 96
+
+model_config = ModelConfig(
+    embedding_dim=embedding_dim,
+    num_classes=n_classes,)
+
+ttc = torchTextClassifiers(
+    tokenizer=tokenizer,
+    model_config=model_config,
+    value_encoder=value_encoder,
+)
+
+# %%
+# Question 2 - Prepare training
+# Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-2-prepare-training
+
+from torchTextClassifiers import TrainingConfig
+
+training_config = TrainingConfig(
+    num_epochs=1,
+    lr=5 * 1e-4,
+    batch_size=128,
+    patience_early_stopping=5,
+)
+
+# %%
+# Question 3 - Train on a small subsample
+# Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-3-train-on-a-small-subsample
+
+import mlflow
+
+mlflow.set_experiment("funathon-2026-project2")
+mlflow.pytorch.autolog()
+
+# with mlflow.start_run() as run:
+#     # This should take approximately 1-2mn
+#     ttc.train(
+#         X_train,
+#         y_train,
+#         training_config=training_config,
+#         X_val=X_val,
+#         y_val=y_val,
+#         verbose=True,
+#     )
+
+#     mlflow.log_artifacts(
+#         training_config.save_path,   # local folder produced by ttc.train()
+#         artifact_path="model_artifacts",
+#     )
+
+# 7. Prediction and explainability
+
+# %%
+# Question 0 - Load the pretrained model from MLflow
+# Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-0-load-the-pretrained-model-from-mlflow
+
+import s3fs
+
+fs = s3fs.S3FileSystem(
+    anon=True,  # public bucket
+    endpoint_url="https://minio.lab.sspcloud.fr",
+)
+
+local_dir = "./mlflow-artifacts/"
+fs.get(
+    "projet-funathon/diffusion/mlflow-artifacts/",
+    local_dir,
+    recursive=True,
+)
+# Rebuild the torchTextClassifiers object from the downloaded files
+ttc = torchTextClassifiers.load(local_dir)
+
+ttc.pytorch_model.eval()
+
+# %%
+# Question 1 - Generate top-5 predictions with confidence scores
+# Based on: https://aiml4os.github.io/funathon-project2/1-ttc.html#question-1-generate-top-5-predictions-with-confidence-scores
 
 # TBD
