@@ -88,38 +88,21 @@ training_config = TrainingConfig(
 )
 
 # %%
-# mlflow.set_experiment("funathon-2026-project2")
-# mlflow.pytorch.autolog()
+ mlflow.set_experiment("funathon-2026-project2")
+ mlflow.pytorch.autolog()
 
-# with mlflow.start_run() as run:
-    # This should take approximately 1-2mn
-    # ttc.train(
-    #     X_train,
-    #    y_train,
-    #    training_config=training_config,
-    #    X_val=X_val,
-    #    y_val=y_val,
-    #    verbose=True,
-    #)
+ with mlflow.start_run() as run:
+     This should take approximately 1-2mn
+     ttc.train(
+         X_train,
+        y_train,
+        training_config=training_config,
+        X_val=X_val,
+        y_val=y_val,
+        verbose=True,
+    )
 
-    #mlflow.log_artifacts(
-    #    training_config.save_path,   # local folder produced by ttc.train()
-    #    artifact_path="model_artifacts",
-    #)
-# %%
-fs = s3fs.S3FileSystem(
-    anon=True,  # public bucket
-    endpoint_url="https://minio.lab.sspcloud.fr",
-)
-
-local_dir = "./mlflow-artifacts/"
-fs.get(
-    "projet-funathon/diffusion/mlflow-artifacts/",
-    local_dir,
-    recursive=True,
-)
-# Rebuild the torchTextClassifiers object from the downloaded files
-ttc = torchTextClassifiers.load(local_dir)
-
-ttc.pytorch_model.eval()
-# %%
+    mlflow.log_artifacts(
+        training_config.save_path,   # local folder produced by ttc.train()
+        artifact_path="model_artifacts",
+    )
