@@ -2,6 +2,9 @@
 # Imported from file "supervised_own_model.py"
 import polars as pl
 from sklearn.model_selection import train_test_split
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 url = "https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project2/generation_None_temp08.parquet"
 
