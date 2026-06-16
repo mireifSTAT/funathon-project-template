@@ -1,0 +1,38 @@
+[
+  {
+    "label":"Hotel mit Restaurant und Spa",
+    "pred_1_code":"55101",
+    "pred_1_description":"hotels",
+    "pred_1_score":1.0284586358,
+    "pred_2_code":"56111",
+    "pred_2_description":"restaurants und gaststaetten restaurants",
+    "pred_2_score":0.8765294497,
+    "pred_3_code":"55102",
+    "pred_3_description":"gasthoefe und pensionen",
+    "pred_3_score":0.753747513
+  },
+  {
+    "label":"Restaurant mit Mitnahme und Lieferservice",
+    "pred_1_code":"56111",
+    "pred_1_description":"restaurants und gaststaetten restaurants",
+    "pred_1_score":0.9311954658,
+    "pred_2_code":"56220",
+    "pred_2_description":"sonstige caterer und erbringung sonstiger verpflegungsdienstleistungen",
+    "pred_2_score":0.7217283001,
+    "pred_3_code":"55101",
+    "pred_3_description":"hotels",
+    "pred_3_score":0.6761306973
+  },
+  {
+    "label":"Betrieb eines Taxidienstes inklusive Krankenfahrten",
+    "pred_1_code":"49330",
+    "pred_1_description":"personenbefoerderung mit fahrzeug mit fahrer auf abruf",
+    "pred_1_score":0.9614715786,
+    "pred_2_code":"49320",
+    "pred_2_description":"personenbefoerderung im gelegenheitsverkehr auf der strasse",
+    "pred_2_score":0.9176510586,
+    "pred_3_code":"49110",
+    "pred_3_description":"personenbefoerderung im eisenbahnverkehr",
+    "pred_3_score":0.6149179416
+  }
+]

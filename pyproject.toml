@@ -1,16 +1,21 @@
 [project]
 name = "funathon-project2"
 version = "0.1.0"
-description = "ÖNACE classification prototype using embeddings"
-readme = "README.md"
+description = "ÖNACE classification prototype using hybrid retrieval (embeddings + TF-IDF)"
+readme = "README_oenace_classifier_v2.md"
 requires-python = ">=3.10"
 
 dependencies = [
     "pandas>=2.0",
+    "numpy>=1.24",
     "sentence-transformers>=3.0",
     "scikit-learn>=1.4",
-    "torch>=2.3,<2.7"
+    "openpyxl>=3.1",
+    "torch>=2.3,<2.7",
 ]
+
+[project.scripts]
+oenace-classifier = "oenace_classifier_v2:main"
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
