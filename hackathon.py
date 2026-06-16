@@ -8,76 +8,73 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 print("\n🚀 STEP 1: Loading data...")
 
-cot = pd.read_csv(
-    "OENACE2025_DE_COT.csv",
-    sep="|",
-    header=None,
-    names=["code", "text"],
-    encoding="latin1"   # ✅ FIX
-)
+def read_file(path):
+    return pd.read_csv(
+        path,
+        sep="|",
+        header=None,
+        names=["code", "text"],
+        encoding="latin1",
+        engine="python"
+    )
 
-cal = pd.read_csv(
-    "OENACE2025_DE_CAL.csv",
-    sep="|",
-    header=None,
-    names=["code", "text"],
-    encoding="latin1"
-)
-
-unt = pd.read_csv(
-    "OENACE2025_DE_UNT.csv",
-    sep="|",
-    header=None,
-    names=["code", "text"],
-    encoding="latin1"
-)
+cot = read_file("OENACE2025_DE_COT.csv")
+cal = read_file("OENACE2025_DE_CAL.csv")
+unt = read_file("OENACE2025_DE_UNT.csv")
 
 cot["source"] = "cot"
 cal["source"] = "cal"
-unt["source"] = "unt"  # NEW
+unt["source"] = "unt"
 
 print(f"COT rows: {len(cot)}")
 print(f"CAL rows: {len(cal)}")
 print(f"UNT rows: {len(unt)}")
 
 # %%
-print("\n🔗 STEP 2: Combine data...")
+print("\n🔗 STEP 2: Prepare data...")
+
+def normalize_text(x):
+    x = str(x).lower()
+    x = x.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("ß", "ss")
+    return x.strip()
+
+for df_ in [cot, cal, unt]:
+    df_["text"] = df_["text"].apply(normalize_text)
+    df_["code"] = df_["code"].astype(str).str.strip()
 
 df = pd.concat([cot, cal], ignore_index=True)
-
-df["text"] = df["text"].astype(str).str.lower().str.strip()
-df["code"] = df["code"].astype(str).str.strip()
 
 df["weight"] = df["source"].map({
     "cal": 1.2,
     "cot": 1.0
 })
 
-# (IMPORTANT) We do NOT include UNT in embeddings
-# → avoid leaking noisy long texts directly
-
-print(f"Total embedding rows: {len(df)}")
-
 # %%
-print("\n🧠 STEP 3: Load embedding model...")
+print("\n🧠 STEP 3: Load model...")
 model = SentenceTransformer("all-MiniLM-L6-v2")
-print("✅ Model loaded")
 
 # %%
-print("\n📦 STEP 4: Encode knowledge base...")
+print("\n📦 STEP 4: Encode embeddings...")
+
 start = time.time()
 
 embeddings = model.encode(
     df["text"].tolist(),
     batch_size=32,
-    show_progress_bar=True,
+    convert_to_numpy=True
+)
+
+# ✅ NEW: encode UNT (critical)
+unt_embeddings = model.encode(
+    unt["text"].tolist(),
+    batch_size=32,
     convert_to_numpy=True
 )
 
 print(f"✅ Encoding done in {time.time() - start:.2f}s")
 
 # %%
-print("\n📖 STEP 5: Code → description mapping...")
+print("\n📖 STEP 5: Code mapping...")
 
 code_to_desc = (
     cot.groupby("code")["text"]
@@ -86,32 +83,22 @@ code_to_desc = (
 )
 
 # %%
-print("\n📚 STEP 6: Build keyword index (COT + CAL + UNT)...")
+print("\n📚 STEP 6: Keyword index (with UNT)...")
 
 code_keywords = defaultdict(set)
 
-
-def add_keywords_from_df(dataframe, boost_factor=1.0):
-    for _, row in dataframe.iterrows():
-        code = str(row["code"])
-        text = str(row["text"]).lower()
-
-        words = re.findall(r"\b[a-zäöüß]{3,}\b", text)
-
+def add_keywords(df_):
+    for _, row in df_.iterrows():
+        words = re.findall(r"\b[a-z]{3,}\b", row["text"])
         for w in words:
-            code_keywords[code].add(w)
+            code_keywords[row["code"]].add(w)
 
+add_keywords(cot)
+add_keywords(cal)
+add_keywords(unt)
 
-# base knowledge
-add_keywords_from_df(cot)
-add_keywords_from_df(cal)
-
-# ✅ NEW: real-world enrichment
-add_keywords_from_df(unt)
-
-# remove overly common words
+# remove very common words
 word_freq = defaultdict(int)
-
 for words in code_keywords.values():
     for w in words:
         word_freq[w] += 1
@@ -124,178 +111,146 @@ for code in code_keywords:
         if word_freq[w] < COMMON_THRESHOLD
     }
 
-print("✅ Keyword index built (with UNT)")
-
 # %%
-print("\n✂️ STEP 7: Robust input extraction...")
+print("\n✂️ STEP 7: Input extraction...")
 
-
-def extract_relevant_parts(text):
-    text = str(text).lower()
+def extract_parts(text):
+    text = normalize_text(text)
 
     noise_patterns = [
         r"sehr geehrte.*",
-        r"mit freundlichen grüßen.*",
+        r"mit freundlichen.*",
         r"ich bitte.*",
-        r"bitte.*ändern.*",
         r"vielen dank.*",
         r"\d+ ?%",
-        r"umsatz.*",
-        r"haupttätigkeit.*",
-        r"nebentätigkeit.*",
+        r"umsatz.*"
     ]
 
     for p in noise_patterns:
         text = re.sub(p, "", text)
 
-    parts = re.split(
-        r"[.,;!?]| und | sowie | außerdem | auch | bzw",
-        text
-    )
+    parts = re.split(r"[.,;!?]| und | sowie | auch | bzw", text)
 
-    parts = [
-        p.strip()
-        for p in parts
-        if len(p.strip()) > 3
-    ]
+    parts = [p.strip() for p in parts if len(p.strip()) > 3]
 
     return parts if parts else [text]
-
 
 # %%
 print("\n🔑 STEP 8: Keyword scoring...")
 
-
-def keyword_score(query):
-    query_words = set(re.findall(r"\b[a-zäöüß]{3,}\b", query.lower()))
-
+def keyword_scores(query):
+    words = set(re.findall(r"\b[a-z]{3,}\b", normalize_text(query)))
     scores = defaultdict(float)
 
-    for code, keywords in code_keywords.items():
-        overlap = query_words & keywords
-
+    for code, kws in code_keywords.items():
+        overlap = words & kws
         if overlap:
-            scores[code] += len(overlap) * 0.04  # slightly stronger now
+            scores[code] += min(len(overlap), 5) * 0.08
 
     return scores
 
-
 # %%
-print("\n🔍 STEP 9: Prediction function...")
-
+print("\n🔍 STEP 9: Prediction...")
 
 def predict_top_k(query, k=3):
-    parts = extract_relevant_parts(query)
+    query = normalize_text(query)
+    parts = extract_parts(query)
 
-    code_scores = {}
+    code_scores = defaultdict(list)
 
-    for part in parts:
-        query_emb = model.encode([part], convert_to_numpy=True)
+    # ✅ batch encode parts
+    part_embs = model.encode(parts, convert_to_numpy=True)
 
-        sims = cosine_similarity(query_emb, embeddings)[0]
+    for emb in part_embs:
+        sims = cosine_similarity([emb], embeddings)[0]
 
-        for i, score in enumerate(sims):
+        for i, s in enumerate(sims):
             code = df.iloc[i]["code"]
             weight = df.iloc[i]["weight"]
-
-            weighted_score = score * weight
-
-            if code not in code_scores:
-                code_scores[code] = []
-
-            code_scores[code].append(weighted_score)
+            code_scores[code].append(s * weight)
 
     final_scores = {}
 
+    # base embedding scores (weakened)
     for code, scores in code_scores.items():
-        max_score = max(scores)
-        mean_score = sum(scores) / len(scores)
-        vote_bonus = 0.04 * len(scores)
-
         final_scores[code] = (
-            max_score * 0.7 +
-            mean_score * 0.3 +
-            vote_bonus
+            max(scores) * 0.5 +
+            (sum(scores)/len(scores)) * 0.2 +
+            0.04 * len(scores)
         )
 
-    # ✅ keyword boost (now enriched with UNT)
-    kw_scores = keyword_score(query)
-
-    for code, kw_score in kw_scores.items():
+    # ✅ keyword boost (stronger)
+    kw = keyword_scores(query)
+    for code, s in kw.items():
         if code in final_scores:
-            final_scores[code] += kw_score
+            final_scores[code] += s
+        else:
+            final_scores[code] = s * 0.7
 
-    top_codes = sorted(
-        final_scores.items(),
-        key=lambda x: x[1],
-        reverse=True
-    )[:k]
+    # ✅ NEW: UNT similarity (MOST IMPORTANT)
+    query_emb = model.encode([query], convert_to_numpy=True)
+    sims = cosine_similarity(query_emb, unt_embeddings)[0]
 
-    results = []
+    top_idx = sims.argsort()[-20:]
 
-    for code, score in top_codes:
-        results.append({
-            "code": code,
-            "description": code_to_desc.get(code, ""),
-            "score": float(score)
-        })
+    for idx in top_idx:
+        code = unt.iloc[idx]["code"]
+        final_scores[code] = final_scores.get(code, 0) + sims[idx] * 0.6
+
+    # ranking
+    top = sorted(final_scores.items(), key=lambda x: x[1], reverse=True)[:k]
 
     return {
         "label": query,
-        "predictions": results
+        "predictions": [
+            {
+                "code": c,
+                "description": code_to_desc.get(c, ""),
+                "score": float(s)
+            }
+            for c, s in top
+        ]
     }
 
-
 # %%
-print("\n📊 STEP 10: Evaluation using UNT (CRITICAL)...")
+print("\n📊 STEP 10: Evaluation...")
 
-unt["text"] = unt["text"].astype(str).str.lower().str.strip()
-unt["code"] = unt["code"].astype(str).str.strip()
+def evaluate(n=200):
+    sample = unt.sample(n, random_state=42)
 
-
-def evaluate(sample_size=200):
-    sample = unt.sample(sample_size, random_state=42)
-
-    correct_top1 = 0
-    correct_top3 = 0
+    top1 = 0
+    top3 = 0
 
     for _, row in sample.iterrows():
-        result = predict_top_k(row["text"], k=3)
-
+        result = predict_top_k(row["text"], 3)
         preds = [p["code"] for p in result["predictions"]]
 
-        if row["code"] == preds[0]:
-            correct_top1 += 1
-
+        if preds and preds[0] == row["code"]:
+            top1 += 1
         if row["code"] in preds:
-            correct_top3 += 1
+            top3 += 1
 
-    print(f"\n✅ Accuracy@1: {correct_top1/sample_size:.2%}")
-    print(f"✅ Accuracy@3: {correct_top3/sample_size:.2%}")
-
+    print(f"\n✅ Accuracy@1: {top1/n:.2%}")
+    print(f"✅ Accuracy@3: {top3/n:.2%}")
 
 # %%
-print("\n🧪 STEP 11: Test examples...")
+print("\n🧪 TEST...")
 
 examples = [
     "Hotel mit Restaurant und Spa",
     "Taxi service und Transport von Personen",
     "Food truck mit takeaway",
-    "Hallo Statistik, wir haben pools und bieten essen an und bringen leute über nacht unter lg firma"
+    "Wir betreiben einen Taxibetrieb und Krankenfahrten"
 ]
 
-for text in examples:
-    print("\n" + "="*70)
-    print(f"INPUT: {text}")
-
-    result = predict_top_k(text, k=3)
-
-    for p in result["predictions"]:
-        print(f"  {p['code']} | {p['description']} ({p['score']:.3f})")
+for e in examples:
+    print("\n" + "="*60)
+    print("INPUT:", e)
+    r = predict_top_k(e)
+    for p in r["predictions"]:
+        print(p)
 
 # %%
-# run evaluation
-evaluate(sample_size=200)
+evaluate(200)
 
-# %%
-print("\n✅ ✅ SCRIPT FINISHED SUCCESSFULLY ✅")
+print("\n✅ DONE")
