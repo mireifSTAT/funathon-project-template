@@ -663,9 +663,9 @@ class OENACEClassifier:
         code_to_text = dict(zip(self.code_docs["code"], self.code_docs["text"]))
 
         pairs = [(label, code_to_text.get(c, "")) for c in candidate_codes]
+
         try:
             scores = self.reranker.predict(pairs)
-            scores = np.asarray(scores, dtype=float)
             scores = np.asarray(scores, dtype=float)
 
             min_s = scores.min()
@@ -675,7 +675,9 @@ class OENACEClassifier:
                 scores = (scores - min_s) / (max_s - min_s)
             else:
                 scores = np.zeros_like(scores)
-                return dict(zip(candidate_codes, scores.tolist()))
+
+            return dict(zip(candidate_codes, scores.tolist()))
+
         except Exception as e:
             print(f"⚠️ Reranking failed; continuing without reranker. Reason: {e}")
             return {}
