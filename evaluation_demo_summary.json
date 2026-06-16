@@ -1,12 +1,12 @@
 {
   "n": 296,
-  "accuracy_at_1": 0.722972972972973,
-  "accuracy_at_3": 0.902027027027027,
-  "accuracy_at_5": 0.9459459459459459,
-  "mrr": 0.816451422372475,
-  "mean_top1_score": 0.16259682926489546,
-  "mean_true_score": 0.14023936189833153,
-  "mean_margin_top1_top2": 0.09631786420768476,
+  "accuracy_at_1": 0.6047297297297297,
+  "accuracy_at_3": 0.8716216216216216,
+  "accuracy_at_5": 0.9358108108108109,
+  "mrr": 0.7498449840644431,
+  "mean_top1_score": 0.2869814344462663,
+  "mean_true_score": 0.21171068188725067,
+  "mean_margin_top1_top2": 0.23380869715488248,
   "median_true_rank": 1.0,
-  "same_section_as_top1_rate": 0.9256756756756757
+  "same_section_as_top1_rate": 0.8378378378378378
 }

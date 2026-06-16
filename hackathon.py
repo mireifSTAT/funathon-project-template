@@ -427,11 +427,17 @@ class OENACEClassifier:
 
         # Build one enriched document per code from COT + CAL + train UNT
         docs_df = pd.concat([cot, cal, self.train_unt], ignore_index=True)
+        
+        def limit_unt_per_code(series):
+            values = dedupe_preserve_order(series.tolist())
+            return " ".join(values[:50])
+
         grouped = (
             docs_df.groupby("code")["text"]
-            .apply(lambda s: " ".join(dedupe_preserve_order(s.tolist())))
+            .apply(limit_unt_per_code)
             .reset_index(name="text")
         )
+
         grouped["description"] = grouped["code"].map(self.code_to_desc).fillna("")
         grouped["section"] = grouped["code"].map(infer_section)
 
@@ -638,7 +644,7 @@ class OENACEClassifier:
         candidates = []
         candidates += top_codes(dense, top_n)
         candidates += top_codes(tfidf, top_n)
-        candidates += top_codes(examples, max(5, top_n // 2))
+        candidates += top_codes(examples, max(6, top_n // 2))
         candidates += top_codes(rules, max(3, top_n // 3))
 
         return dedupe_preserve_order(candidates)
@@ -660,8 +666,16 @@ class OENACEClassifier:
         try:
             scores = self.reranker.predict(pairs)
             scores = np.asarray(scores, dtype=float)
-            scores = softmax_scale(scores, temperature=self.config.rerank_temperature)
-            return dict(zip(candidate_codes, scores.tolist()))
+            scores = np.asarray(scores, dtype=float)
+
+            min_s = scores.min()
+            max_s = scores.max()
+
+            if max_s - min_s > 1e-6:
+                scores = (scores - min_s) / (max_s - min_s)
+            else:
+                scores = np.zeros_like(scores)
+                return dict(zip(candidate_codes, scores.tolist()))
         except Exception as e:
             print(f"⚠️ Reranking failed; continuing without reranker. Reason: {e}")
             return {}
@@ -1084,17 +1098,25 @@ print("✅ Demo summary helper ready")
 config = OENACEConfig(
     model_name="intfloat/multilingual-e5-small",
     reranker_name="cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
-    use_reranker=False,   # set False if you want pure retriever mode
+    use_reranker=True,
+
     test_size=0.20,
     random_state=42,
     top_k=3,
+
     top_k_example_neighbors=10,
-    candidate_pool_size=15,
+    candidate_pool_size=25,   # ✅ moderate (nicht zu groß!)
+
     dense_weight=0.55,
     tfidf_weight=0.20,
     examples_weight=0.10,
-    rerank_weight=0.05,
+    rerank_weight=0.05,       # ✅ KEY FIX (war 0.20 → viel zu hoch)
+
     rule_multiplier=0.10,
+
+    dense_temperature=0.15,   # ✅ stabiler als 0.30
+    tfidf_temperature=0.08,
+    rerank_temperature=0.12,
 )
 
 clf = OENACEClassifier(config=config)
