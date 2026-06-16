@@ -1,0 +1,632 @@
+49110|Eisenbahn, Personenbeförderung im Fernverkehr
+49110|Landesbahn, Personenbeförderung im Fernverkehr
+49110|Personenbeförderung im Eisenbahnfernverkehr
+49110|Personenbeförderung im Eisenbahnverkehr
+49110|Privatbahn, Personenbeförderung im Fernverkehr
+49120|Eisenbahn, Personenbeförderung im Nahverkehr
+49120|Personenbeförderung im Eisenbahnnahverkehr
+49120|Schnellbahn
+49120|Sonstige Personenbeförderung im Schienenverkehr
+49120|Straßenbahn
+49120|U-Bahn
+49120|Zahnradbahn
+49200|Eisenbahn, Güterbeförderung
+49200|Eisenbahnen, Frachtverkehr
+49200|Frachtverkehr mit Eisenbahnen
+49200|Güterbeförderung im Eisenbahnfernverkehr
+49200|Landesbahn, Güterbeförderung
+49200|Privatbahn, Güterbeförderung
+49310|Autobuslinienverkehr, Fernverkehr
+49310|Autobuslinienverkehr, innerstädtisch
+49310|Autobuslinienverkehr, Nahverkehr
+49310|Autobuslinienverkehr, Überlandverkehr
+49310|Autobusunternehmen, Linienverkehr, Fernverkehr
+49310|Autobusunternehmen, Linienverkehr, Nahverkehr
+49310|Bahnhofslinien, Autobuslinienverkehr
+49310|Flughafenlinie
+49310|Kraftfahrlinienverkehr, Fernverkehr
+49310|Kraftfahrlinienverkehr, Nahverkehr
+49310|Kraftwagendienst städtischer Verkehrsbetriebe
+49310|O-Bus
+49310|O-Busverkehr
+49310|Omnibuslinienverkehr, Fernverkehr
+49310|Omnibuslinienverkehr, Nahverkehr
+49310|Personenbeförderung auf der Straße, mit Fahrplan
+49310|Rundfahrten, Stadt-
+49310|Schulbus
+49310|Sightseeing im Bereich des Landverkehrs
+49310|Stadtrundfahrten mit Besichtigungsbussen
+49310|Überland-Autobuslinienverkehr
+49320|Ausflugsverkehr
+49320|Autobus-Gelegenheitsverkehr
+49320|Autobusunternehmen (nicht: Linienverkehr)
+49320|Busse mit Fahrerin und Fahrer
+49320|Gelegenheitsverkehr im Bereich des Landverkehrs
+49320|Gesellschaftsfahrten, Straßenverkehr
+49320|Mietautobus (mit einem Gesamtgewicht von mehr als 3,5 t)
+49320|Omnibus-Gelegenheitsverkehr
+49320|Personenbeförderung auf der Straße, ohne Fahrplan
+49330|Autotaxi
+49330|Chauffeurdienste ohne Fahrzeugbereitstellung
+49330|Flughafentaxi
+49330|Kraftwagen, Vermietung mit Fahrerin und Fahrer
+49330|Krankentransporte in Fahrzeugen ohne Sanitätspersonal und ohne lebensrettende Ausrüstung
+49330|Mietautobus (mit einem Gesamtgewicht von 3,5 t oder weniger)
+49330|Mietfahrer ohne Fahrzeugbereitstellung
+49330|Mietfahrerin ohne Fahrzeugbereitstellung
+49330|Mietwagen mit Fahrerin und Fahrer
+49330|Mietwagenverkehr
+49330|Motorradtaxis
+49330|Personenkraftwagenvermietung mit Fahrerin und Fahrer
+49330|Taxiverkehr
+49330|Vermietung von Kraftwagen bis 3,5 t Gesamtgewicht mit Fahrerin und Fahrer
+49340|Gondelbahn
+49340|Kabinenbahn
+49340|Schlepplift
+49340|Seilbahnverkehr
+49340|Seilschwebebahn
+49340|Sessellift
+49340|Skilift
+49340|Umlaufbahn, Seilbahn
+49390|Fahrradtaxis
+49390|Fahrzentrale für Fahrradtaxis
+49390|Fiakerei
+49390|Pferdekutschen mit Fahrerin und Fahrer (nicht: Güterbeförderung)
+49390|Sonstige Personenbeförderung auf Straßen
+49410|Abfalltransporte, wobei der Abfall von Dritten gesammelt wurde
+49410|Autotransportunternehmung
+49410|Eiltransporte
+49410|Frächterei
+49410|Fuhrverkehr
+49410|Fuhrwerksverkehr
+49410|Gespannfahrzeuge, Güterbeförderung
+49410|Güterbeförderung auf der Straße, Frächterei
+49410|Güterbeförderung im Straßenverkehr von Briefen als Fracht, für Dritte
+49410|Güterbeförderung mit Gespannfahrzeugen
+49410|Güterbeförderung mit Handfahrzeugen
+49410|Holztransporte auf der Straße, Frächterei
+49410|Kfz-Überstellung (nicht: auf eigener Achse)
+49410|Kleintransporte im Straßenverkehr (nicht: Umzugstransporte, Paketzusteller)
+49410|Kraftwagen über 3,5 t, Vermietung mit Fahrerin und Fahrer
+49410|Kühlwagentransporte
+49410|Lastenautotransporte
+49410|Lastfuhrwerksverkehr
+49410|Lastkraftwagenvermietung mit Fahrerin und Fahrer
+49410|Lkw-Vermietung mit Fahrerin und Fahrer
+49410|Lohnfuhrwerk
+49410|Mineralöltransporte
+49410|Nahtransporte
+49410|Sandtransporte
+49410|Schottertransporte
+49410|Schwertransporte
+49410|Schüttguttransporte
+49410|Silotransporte
+49410|Spezialtransporte
+49410|Tankwagentransporte
+49410|Transport mit Kraftwagen
+49410|Transport von Beton
+49410|Transport von Kraftwagen
+49410|Transport von Lasten jeder Art mit Straßenfahrzeugen
+49410|Transportunternehmung mit Straßenfahrzeugen
+49410|Vermietung von Betonmischlastwagen mit Bedienpersonal
+49410|Vermietung von Kraftwagen über 3,5 t Gesamtgewicht mit Fahrerin und Fahrer
+49410|Viehtransporte
+49420|Klaviertransporte
+49420|Kleintransporte im Straßenverkehr, Umzugstransporte
+49420|Möbeltransporte
+49420|Umzugsdienstleistungen
+49420|Umzugstransporte
+49420|Übersiedlungstransporte
+49500|Beförderung von Erdgas in Rohrfernleitungen
+49500|Beförderung von Erdöl in Rohrfernleitungen
+49500|Erdgasfernleitung
+49500|Erdgaspipeline
+49500|Erdölfernleitung
+49500|Erdölpipeline
+49500|Flüssigkeiten,Transport in Rohrfernleitungen
+49500|Pipeline
+49500|Pumpstation, Betrieb für den Transport über Pipelines
+49500|Rohrfernleitungen, Transport
+49500|Transport in Rohrfernleitungen
+49500|Transport von Flüssigkeiten in Rohrfernleitungen
+49500|Ölfernleitung
+50100|Fährtransport von Kraftfahrzeugen mit Fahrerinnen und Fahrer
+50100|Fährverkehr, Personenbeförderung in der Hochsee- und Küstenschifffahrt
+50100|Hochseeschifffahrt, Personenbeförderung
+50100|Hochseeschifffahrtsreederei, Personenbeförderung
+50100|Kreuzfahrt
+50100|Küstenschifffahrt, Personenbeförderung
+50100|Küstenschifffahrtsreederei, Personenbeförderung
+50100|Linienschifffahrt, Personenbeförderung, nicht auf Binnengewässern
+50100|Passagierschifffahrt auf Hochsee- und Küstenschiffen
+50100|Personenbeförderung in der Hochsee- und Küstenschifffahrt
+50100|Personenschifffahrt auf Hochsee- und Küstenschiffen
+50100|Reederei, Personenbeförderung, nicht auf Binnengewässern
+50100|Seefähren, Personenbeförderung
+50100|Vermietung von Vergnügungsschiffen mit Besatzung, Hochsee- und Küstenschifffahrt
+50100|Vermietung von Wasserfahrzeugen mit Besatzung, Hochsee- und Küstenschifffahrt, Personenbeförderung
+50100|Wassertaxis, Hochsee- und Küstenschifffahrt
+50200|Fährtransport von Kraftfahrzeugen ohne Fahrerinnen und Fahrer
+50200|Fährverkehr, Güterbeförderung in der Hochsee- und Küstenschifffahrt
+50200|Güterbeförderung auf Hochsee- und Küstenschiffen
+50200|Handelsschiffe mit Besatzung
+50200|Hochseeschifffahrt, Güterbeförderung
+50200|Hochseeschifffahrtsreederei, Güterbeförderung
+50200|Küstenschifffahrt, Güterbeförderung
+50200|Küstenschifffahrtsreederei, Güterbeförderung
+50200|Linienschifffahrt, Güterbeförderung, nicht auf Binnengewässern
+50200|Reederei, Güterbeförderung, nicht auf Binnengewässern
+50200|Seefähren, Güterbeförderung
+50200|Vermietung von Wasserfahrzeugen mit Besatzung, Hochsee- und Küstenschifffahrt, Güterbeförderung
+50300|Binnenseeschifffahrt, Personenbeförderung
+50300|Dampfschifffahrt, Personenbeförderung, auf Binnengewässern
+50300|Flussfähre, Personenbeförderung
+50300|Fährverkehr, Personenbeförderung, auf Binnengewässern
+50300|Hafenschifffahrt, Personenbeförderung
+50300|Kanalfähre, Personenbeförderung
+50300|Linienschifffahrt, Personenbeförderung, auf Binnengewässern
+50300|Motorboottaxi
+50300|Motorbootverkehr
+50300|Motorbootüberfuhr
+50300|Motorfähre, Personenbeförderung
+50300|Passagierschifffahrt auf Binnengewässern
+50300|Personenbeförderung in der Binnenschifffahrt
+50300|Personenschifffahrt auf Binnengewässern
+50300|Rollfähre, Personenbeförderung
+50300|Schifffahrtsgesellschaft, Personenbeförderung, auf Binnengewässern
+50300|Stromschifffahrt, Personenbeförderung
+50300|Vermietung von Vergnügungsschiffen mit Besatzung, Binnenschifffahrt
+50300|Vermietung von Wasserfahrzeugen mit Besatzung, Binnenschifffahrt
+50300|Überfuhrverkehr, Personenbeförderung
+50400|Binnenseeschifffahrt, Güterbeförderung
+50400|Dampfschifffahrt, Güterbeförderung, auf Binnengewässern
+50400|Flussfähre, Güterbeförderung
+50400|Fährverkehr, Güterbeförderung, auf Binnengewässern
+50400|Güterbeförderung mit Schiffen auf Binnengewässern
+50400|Hafenschifffahrt, Güterbeförderung
+50400|Kanalfähre, Güterbeförderung
+50400|Linienschifffahrt, Güterbeförderung, auf Binnengewässern
+50400|Motorfähre, Güterbeförderung
+50400|Rollfähre, Güterbeförderung
+50400|Schifffahrtsgesellschaft, Güterbeförderung, auf Binnengewässern
+50400|Schleppschiffe auf Binnengewässern
+50400|Schubschiffe auf Binnengewässern
+50400|Stromschifffahrt, Güterbeförderung
+50400|Vermietung von Schiffen mit Besatzung, Binnenschifffahrt, Güterbeförderung
+50400|Überfuhrverkehr, Güterbeförderung
+51100|Ballonfahrten
+51100|Berufspilot, Personenbeförderung
+51100|Charterflugdienst, Personenbeförderung
+51100|Fluggesellschaft, Personenbeförderung
+51100|Fluglinienverkehr, Personenbeförderung
+51100|Gelegenheitsflugverkehr, Personenbeförderung
+51100|Helikopterdienst, Personenbeförderung
+51100|Hubschrauber mit Besatzung, Personenbeförderung
+51100|Hubschrauberdienst, Personenbeförderung
+51100|Linienflugverkehr, Personenbeförderung
+51100|Luftbeförderungsunternehmen, Personenbeförderung
+51100|Luftfahrzeuge mit Besatzung, Personenbeförderung
+51100|Luftfahrzeugvermietung mit Besatzung, Personenbeförderung
+51100|Luftlinienverkehr, Personenbeförderung
+51100|Lufttaxi
+51100|Passagierbeförderung im Gelegenheitsflugverkehr
+51100|Passagierbeförderung im Linienflugverkehr
+51100|Personenbeförderung im Gelegenheitsflugverkehr
+51100|Personenbeförderung im Linienflugverkehr
+51100|Rundfluggesellschaft
+51100|Rundflüge
+51100|Vermietung von Luftfahrzeugen mit Besatzung, Personenbeförderung
+51210|Berufspilot, Güterbeförderung
+51210|Charterflugdienst, Güterbeförderung
+51210|Fluggesellschaft, Güterbeförderung
+51210|Fluglinienverkehr, Güterbeförderung
+51210|Gelegenheitsflugverkehr, Güterbeförderung
+51210|Güterbeförderung im Gelegenheitsflugverkehr
+51210|Güterbeförderung im Linienflugverkehr
+51210|Helikopterdienst, Güterbeförderung
+51210|Hubschrauberdienst, Güterbeförderung
+51210|Linienflugverkehr, Güterbeförderung
+51210|Luftbeförderungsunternehmen, Güterbeförderung
+51210|Luftfahrzeuge mit Besatzung, Güterbeförderung
+51210|Luftfahrzeugvermietung mit Besatzung, Güterbeförderung
+51210|Luftfrachtverkehr
+51210|Luftlinienverkehr, Güterbeförderung
+51210|Vermietung von Luftfahrzeugen mit Besatzung, Güterbeförderung
+51220|Aussetzen von Satelliten
+51220|Güterbeförderung im Raumflugverkehr
+51220|Personenbeförderung im Raumflugverkehr
+51220|Raumfahrt
+51220|Raumtransport
+52101|Erdgaslagerei
+52101|Erdöllagerei
+52101|Gaslager
+52101|Lagerung gasförmiger Brennstoffe
+52101|Öllager
+52109|Aufbewahrung von Waren (nicht: Erdöl- und Erdgaslagerei)
+52109|Auslieferungslager (nicht: Erdöl- und Erdgaslagerei)
+52109|Betrieb von Lagereinrichtungen (nicht: Erdöl- und Erdgaslagerei)
+52109|Einlagerung von Waren (nicht: Erdöl- und Erdgaslagerei)
+52109|Freilager
+52109|Gefrierhalle
+52109|Getreidesilo
+52109|Kfz-Lager, Betrieb
+52109|Kühlhaus, Lagerei
+52109|Lagerei (nicht: Erdöl- und Erdgaslagerei)
+52109|Lagerhaus (nicht: landwirtschaftliche Lagerhausgenossenschaft) (nicht: Erdöl- und Erdgaslagerei)
+52109|Lagerhäuser, Betrieb (nicht: Erdöl- und Erdgaslagerei)
+52109|Lagerplatz
+52109|Lagertank (nicht: Erdöl- und Erdgaslagerei)
+52109|Lagerung (nicht: Erdöl- und Erdgaslagerei)
+52109|Magazin, Lagerei
+52109|Möbeleinlagerung
+52109|Nahrungsmittellager
+52109|Nutzholzlager
+52109|Schockgefrieren für Lagerei
+52109|Silo, Lagerei
+52109|Speicher
+52109|Speicherhaus
+52109|Tanklager (nicht: Erdöl- und Erdgaslagerei)
+52109|Textillager
+52109|Tiefkühlanlage, Lagerei
+52109|Tierische Abfallprodukte, Schockgefroren, Lagerei
+52109|Wareneinlagerung (nicht: Erdöl- und Erdgaslagerei)
+52109|Zollfreilager
+52211|Boxenvermietung
+52211|Einheben von Parkgebühren (auch via Handy)
+52211|Fahrradaufbewahrung
+52211|Garage
+52211|Parkgarage
+52211|Parkhaus
+52211|Parkplatz
+52211|Tiefgarage
+52211|Vermietung von Parkflächen, kurzfristig
+52211|Winterstellplatz für Wohnwagen
+52212|Mautbrücke
+52212|Mauteinhebungsdienste
+52212|Mautstraße
+52212|Mauttunnel für den Straßenbau
+52212|Straßenbau, Realisierung von Bauvorhaben zum eigenen Betrieb
+52212|Tunnelbau, Realisierung von Bauvorhaben zum eigenen Betrieb, für den Straßenbau
+52213|Bahnhof, Eisenbahn
+52213|Betrieb von Eisenbahninfrastruktur
+52213|Eisenbahninfrastruktur, Betrieb
+52213|Fahrkartenverkaufsstellen für Eisenbahnen
+52213|Gewährleistung der Sicherheit bei Instandhaltungsarbeiten an der Eisenbahninfrastruktur
+52213|Instandhaltung von rollendem Material
+52213|Mauttunnel für den Eisenbahnverkehr
+52213|Remise
+52213|Tunnelbau, Realisierung von Bauvorhaben zum eigenen Betrieb, für den Eisenbahnverkehr
+52213|Verkehrsverbund
+52219|Abschleppdienst für Kfz
+52219|Autoabschleppdienst
+52219|Autobusbahnhöfe, Betrieb
+52219|Betrieb von Autobusbahnhöfen
+52219|Brückenwaage
+52219|Fahrkartenverkaufsstellen für Busse
+52219|Fuhrparkmanagement
+52219|Gepäckaufbewahrung
+52219|GPS Ortungssysteme für Fahrzeuge, Betrieb von
+52219|Hilfsdienste für den Landverkehr
+52219|Omnibusbahnhöfe, Betrieb
+52219|Pannendienste
+52219|Pannenhilfe
+52219|Reparatur von rollendem Material, kleinere
+52219|Speicherung von Gas zur Netzversorgung
+52219|Transportbegleitung im Landverkehr
+52219|Verflüssigung von Gas zu Transportzwecken
+52219|Verkehrshilfsdienste
+52220|Abfertigungseinrichtungen in der Schifffahrt
+52220|Anlegestelle
+52220|Bergungsdienst, Schifffahrt
+52220|Betankung von Schiffen
+52220|Betrieb von Feuerschiffen
+52220|Betrieb von Hebewerken
+52220|Betrieb von Wehren
+52220|Bunkerschiffe
+52220|Containerhafen
+52220|Dockbetrieb (nicht: Reparaturbetrieb)
+52220|Feuerschiffe, Betrieb
+52220|Gewährleistung der Sicherheit bei Instandhaltungsarbeiten an der Wasserstraßeninfrastruktur
+52220|Hafenbetrieb
+52220|Hebewerke, Betrieb
+52220|Hilfseinrichtungen der Schifffahrt
+52220|Hilfstätigkeiten für die Schifffahrt
+52220|Leichterverkehr
+52220|Leuchtfeuerbetrieb
+52220|Leuchtturm
+52220|Lotsendienst
+52220|Schiffsbergung
+52220|Schleppdienste für die Binnenschifffahrt
+52220|Schleppdienste für die Hochsee- und Küstenschifffahrt
+52220|Schleusenanlage
+52220|Schleusenaufsicht
+52220|Stellplätze für Boote
+52220|Transportbegleitung im Schiffsverkehr
+52220|Wehren, Betrieb
+52220|Wiederflottmachung in der Schifffahrt
+52230|Abfertigungseinrichtungen für die Luftfahrt
+52230|Austro Control, Flugsicherung
+52230|Betrieb von Radarstationen auf Flughäfen
+52230|Bodendienste auf Flughäfen
+52230|Brandbekämpfungsdienste auf Flughäfen
+52230|Flugabfertigungseinrichtungen
+52230|Flugfeld
+52230|Flughafen
+52230|Flughafenfeuerwehr
+52230|Flughafenkontrolle
+52230|Flugplankoordinator
+52230|Flugplatz, Zivil-
+52230|Flugplatzbetrieb
+52230|Flugsicherungsbetrieb
+52230|Flugsicherungsmassnahmen auf Flughäfen
+52230|Flugsicherungsmassnahmen auf Langstrecken
+52230|Flugverkehrskontrolle
+52230|Flugverkehrsregelung
+52230|Flugverkehrsüberwachung
+52230|Flugzeugbergung
+52230|Flugzeugbetankung
+52230|Gewährleistung der Sicherheit bei Instandhaltungsarbeiten an der Flughafeninfrastruktur
+52230|Hilfseinrichtungen des Luftverkehrs
+52230|Hilfstätigkeiten für die Luftfahrt
+52230|Landeplatz
+52230|Nebentätigkeiten für die Luftfahrt
+52230|Radarstationen, Betrieb auf Flughäfen
+52230|Typenberechtigung für Flugzeuge
+52230|Zivile Luftraumüberwachung
+52230|Zivilflugplatz
+52240|Frachtumschlag
+52240|Güterumschlag
+52240|Reisegepäckumschlagleistungen
+52240|Stauerei
+52240|Verladebetrieb
+52240|Vermietung von Drehkranen, mit Bedienungspersonal, für den Frachtumschlag
+52240|Vermietung von Transtainern, mit Bedienungspersonal, für den Frachtumschlag
+52250|Absatzlogistik
+52250|Beschaffungslogistik
+52250|Distributionszentren
+52250|Logistik
+52250|Transportlogistik
+52260|Bahnsammelspedition
+52260|Eilgutsammeldienst
+52260|Frachtgutsammeldienst
+52260|Kraftwagenspedition
+52260|Luftfrachtspedition (nicht: Güterbeförderung)
+52260|Mitfahrzentralen
+52260|Sammeldienst für Frachtgut
+52260|Seehafenspedition
+52260|Spedition (nicht: Güterbeförderung)
+52260|Umzugsspeditionen
+52260|Warenkommissionierung durch Speditionen
+52260|Zollspedition
+52310|Frachtmakler
+52310|Luftfrachtbüro (nicht: Luftverkehrsunternehmung)
+52310|Luftfrachtkontor (nicht: Güterbeförderung)
+52310|Schiffsagentur
+52310|Seefrachtbüro
+52310|Transportagentur
+52310|Transportvermittlung
+52310|Verkehrsleistungen, Vermittlung von Frachtgut
+52310|Vermittlung von Luftfrachträumen
+52310|Vermittlung von Schienenfrachträumen
+52310|Vermittlung von Schiffsladeräumen
+52310|Vermittlungstätigkeiten, Frachttransport
+52320|Fahrzentrale für Taxis
+52320|Reservierung für Beförderungsmittel
+52320|Taxifunkzentrale
+52320|Verkehrsleistungen, Vermittlung von Reisenden und Urlaubern
+52320|Vermittlung von Fahrgastplätzen auf Schiffen
+52320|Vermittlung von Fahrgastplätzen in Flugzeugen
+52320|Vermittlung von Fahrkarten
+52320|Vermittlung von Flugtickets
+52320|Vermittlungstätigkeiten, Personenbeförderung
+53100|Post, österreichische
+53100|Postamt
+53100|Postdienste
+53100|Postdienste von Universaldienstleistungsanbietern
+53100|Posthilfsstelle
+53100|Postpartnerdienste
+53100|Postwesen
+53100|Österreichische Post
+53200|Bote
+53200|Botendienste
+53200|Expressdienste
+53200|Fahrradbotendienst
+53200|Fahrzentrale für Fahrradkuriere
+53200|Gütertaxi
+53200|Hauslieferdienste
+53200|Kurierdienst, privat
+53200|Lebensmittellieferdienste
+53200|Paketdienst, privat
+53200|Paketshop
+53200|Privater Kurierdienst
+53200|Privater Paketdienst
+53200|Privatkurier
+53200|Privatkurierin
+53200|Stadtkurierdienst, privat
+53200|Zustelldienst, privat
+53300|Vermittlungstätigkeiten, Post-, Kurier- und Expressdienste
+55101|Chalet, als Teil eines Hotels
+55101|Dependance, als Teil eines Hotels
+55101|Hotel
+55101|Hotel garni
+55101|Hotelpension, als Hotel geführt
+55101|Kurhotel
+55101|Motel
+55102|Bed and breakfast Einheiten, mit täglichem Bettenmachen und Reinigen der Zimmer
+55102|Fremdenheim, als Teil einer Pension
+55102|Frühstückspension
+55102|Gasthaus, Schwerpunkt Beherbergung
+55102|Gasthof, Schwerpunkt Beherbergung
+55102|Gastwirtschaft, Schwerpunkt Beherbergung
+55102|Gästehaus
+55102|Hotelpension, als Pension geführt
+55102|Kurpension ohne Kurzwang
+55102|Pension
+55102|Rasthaus, Schwerpunkt Beherbergung
+55102|Wirtshaus, Schwerpunkt Beherbergung
+55201|Berghütte, Schwerpunkt Beherbergung
+55201|Hüttenwirtschaft, Schwerpunkt Beherbergung
+55201|Jugendherberge
+55201|Schutzhaus, Schwerpunkt Beherbergung
+55201|Schutzhütte, Schwerpunkt Beherbergung
+55202|Appartements
+55202|Bed and breakfast Einheiten, ohne täglichem Bettenmachen und Reinigen der Zimmer
+55202|Bungalowvermietung
+55202|Erholungsheim (nicht: Fürsorgeheim)
+55202|Ferienhaus
+55202|Ferienheim
+55202|Ferienwohnung
+55202|Ferienzentrum
+55202|Gästebungalow
+55202|Gästewohnung
+55202|Hotels mit Selbstbedienung, ohne täglichem Bettenmachen und Reinigen der Zimmer
+55202|Kinderferienlager
+55202|Privatzimmervermietung
+55202|Self-service Hotels, ohne täglichem Bettenmachen und Reinigen der Zimmer
+55300|Biwakeinrichtung für das Aufstellen von Zelten
+55300|Biwakeinrichtung für das Ausbreiten von Schlafsäcken
+55300|Campingplatz
+55300|Caravanpark
+55300|Zeltplatz
+55400|Privatzimmervermittlung
+55400|Reservierung für Hotels
+55400|Vermittlung von Timesharing-Wohnungen
+55400|Vermittlung von Unterkünften
+55900|Arbeiterwohnheim
+55900|Eisenbahnschlafwagen
+55900|Feriencamp
+55900|Internat (nicht: mit Schule verbunden)
+55900|Jugendsportheim
+55900|Konvikt (nicht: mit Schule verbunden)
+55900|Schlafwagen, Betrieb
+55900|Schülerheim (nicht: mit Schule verbunden)
+55900|Studentenheim (nicht: mit Schule verbunden)
+55900|Touristenheim
+55900|Unterkunftshaus (nicht: karitativ)
+55900|Wohnheim für Schüler und Studenten (nicht: mit Schule verbunden)
+55900|Übernachtungsheim
+56111|Bahnhofgaststätte
+56111|Berghütte (nicht: Schwerpunkt Beherbergung)
+56111|Bistro, Restaurant
+56111|Bräustüberl
+56111|Cafe-Restaurant
+56111|China Restaurant
+56111|Fast Food Restaurant
+56111|Gasthaus (nicht: Schwerpunkt Beherbergung)
+56111|Gasthof (nicht: Schwerpunkt Beherbergung)
+56111|Gastwirtschaft (nicht: Schwerpunkt Beherbergung)
+56111|Griechisches Restaurant
+56111|Grillrestaurant
+56111|Hüttenwirtschaft (nicht: Schwerpunkt Beherbergung)
+56111|Indisches Restaurant
+56111|Italienisches Restaurant
+56111|Kaffeerestaurant
+56111|Pizzeria
+56111|Rasthaus (nicht: Schwerpunkt Beherbergung)
+56111|Restaurant
+56111|Restaurant-Cafe
+56111|Schnellgaststätte
+56111|Schutzhaus (nicht: Schwerpunkt Beherbergung)
+56111|Schutzhütte (nicht: Schwerpunkt Beherbergung)
+56111|Selbstbedienungsrestaurant
+56111|Speisehaus
+56111|Speisewagen, Betrieb
+56111|Speisewirtschaft
+56111|Sushi-Bar
+56111|Thailändisches Restaurant
+56111|Türkisches Restaurant
+56111|Vegetarisches Restaurant
+56111|Vermittlungstätigkeiten, Gastronomie
+56111|Wirtshaus (nicht: Schwerpunkt Beherbergung)
+56112|Almhütte
+56112|Backhendlstation
+56112|Bistro, Imbissstube
+56112|Buffet
+56112|Buschenschank mit Verkauf von Speisen
+56112|Erfrischungsstand
+56112|Fischbraterei
+56112|Frühstücksstube
+56112|Gulaschhütte
+56112|Heurigenbuffet
+56112|Imbissstube
+56112|Jausenstation
+56112|Kebapstand
+56112|Pizzastand
+56112|Pizzazustelldienst, Zustellung selbst zubereiteter Mahlzeiten, zum sofortigen Verzehr
+56112|Snack-Bar
+56112|Snackhaus
+56112|Take Away Food
+56112|Verkaufshütte
+56112|Würstelstand
+56112|Zustellung selbst zubereiteter Mahlzeiten, zum sofortigen Verzehr
+56113|Bistro, Cafe
+56113|Cafe
+56113|Coffee House
+56113|Coffee Shop
+56113|Espresso
+56113|Internet-Cafe mit der Möglichkeit, unentgeltlich im Internet zu surfen
+56113|Kaffeehaus
+56113|Kaffeekonditorei
+56113|Konditorei
+56114|Eisdiele
+56114|Eissalon
+56114|Speiseeis, in Eissalons hergestellt
+56120|Eisverkaufswagen
+56120|Food Truck
+56120|Imbisswagen
+56120|Maronibraterei
+56120|Streetfood
+56210|Event-Caterer
+56210|Mietkoch
+56210|Partyservice
+56220|Betriebskantine
+56220|Betriebsküche
+56220|Bürokantine
+56220|Catering für Beförderungsunternehmen
+56220|Essen auf Rädern
+56220|Fabrikskantine
+56220|Kantine
+56220|Lieferküche
+56220|Mensa
+56220|Messen für Armeeangehörige
+56220|Schulkantine
+56220|Schulküche
+56220|Sportkantine
+56220|Studentenmensa
+56220|Verpflegungsdienstleistungen für Beförderungsunternehmen
+56220|Werksküche
+56300|American-Bar
+56300|Ausschank von Spirituosen
+56300|Bar
+56300|Bierhalle
+56300|Bierlokal
+56300|Bierschenke
+56300|Bierschwemme
+56300|Bierstube
+56300|Bodega
+56300|Branntweinschenke
+56300|Brauhaus, Gaststätte
+56300|Buschenschank ohne Verkauf von Speisen
+56300|Cocktailbar
+56300|Coffee-Bike
+56300|Diskothek
+56300|Getränkeausschank
+56300|Heurigenschenke ohne Verkauf von Speisen
+56300|Kaffeeausschank, mobil
+56300|Kaffeemobil
+56300|Kellerschenke
+56300|Likörstube
+56300|Mobile Kaffeebar
+56300|Mobiler Getränkeverkauf
+56300|Mobiler Kaffeestand
+56300|Nachtclub
+56300|Pub
+56300|Saftbar
+56300|Schankwirtschaft
+56300|Schenke
+56300|Tanzbar
+56300|Teestube
+56300|Weinkeller ohne Verkauf von Speisen
+56300|Weinstube ohne Verkauf von Speisen
+56300|Winzerstube ohne Verkauf von Speisen
+56400|Reservierung für Restaurants
