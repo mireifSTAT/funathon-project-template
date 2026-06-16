@@ -9,7 +9,7 @@ import polars as pl
 from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from torchTextClassifiers import ModelConfig, TrainingConfig, torchTextClassifiers
+from torchtextclassifiers import ModelConfig, TrainingConfig, torchTextClassifiers
 from torchTextClassifiers.tokenizers import WordPieceTokenizer
 from torchTextClassifiers.utilities.plot_explainability import (
     figshow,
@@ -208,3 +208,4 @@ figshow(
     )[0]
 )
 # %%
+
