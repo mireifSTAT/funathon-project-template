@@ -27,6 +27,8 @@ import json
 import math
 import re
 import time
+from dotenv import load_dotenv
+import os
 from collections import defaultdict
 try:
     from tqdm.auto import tqdm
@@ -48,12 +50,34 @@ try:
 except Exception:
     CrossEncoder = None
 
+from google import genai 
+import re
+       
+
 print("✅ Imports loaded")
 
 # %%
 # -----------------------------
 # Configuration
 # -----------------------------
+load_dotenv()
+
+def safe_parse_json(text):
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+
+    # extract JSON block (list or object)
+    match = re.search(r"(\{.*\}|\[.*\])", text, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(1))
+        except Exception:
+            pass
+
+    return None
+
 @dataclass
 class OENACEConfig:
     model_name: str = "intfloat/multilingual-e5-small"
@@ -149,6 +173,13 @@ print("✅ Config loaded")
 # -----------------------------
 # Utilities
 # -----------------------------
+
+
+def chunk_list(lst, size=15):
+    for i in range(0, len(lst), size):
+        yield lst[i:i + size]
+
+
 def read_pipe_csv(path: str | Path) -> pd.DataFrame:
     """
     Robust reader for code|text files.
@@ -342,6 +373,107 @@ def safe_group_split(
     return train_df.reset_index(drop=True), test_df.reset_index(drop=True)
 
 
+class GeminiReranker:
+    def __init__(self, model="gemini-3.5-flash"):
+        self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+        self.model = model
+
+    def build_prompt(self, label: str, candidates: list, top1_code: str, top1_desc: str) -> str:
+        """
+        candidates = [
+            {
+                "code": "55101",
+                "description": "...",
+                "text": "...",   # aggregated CAL + COT
+                "score": 0.82
+            }
+        ]
+        """
+
+        prompt = f"""
+You are an expert in ÖNACE 2025 classification.
+
+Task:
+The current top prediction is:
+
+Code: {top1_code}
+Title: {top1_desc}
+
+Your task:
+- Decide if this prediction is CORRECT
+- If correct: keep it
+- If wrong: choose a better candidate from the list
+
+Be critical. Only keep the top prediction if it clearly fits best.
+
+INPUT:
+"{label}"
+
+CANDIDATES:
+"""
+
+        for i, c in enumerate(candidates, start=1):
+            prompt += f"""
+{i}.
+Code: {c['code']}
+Prior Score: {c['score']:.3f}
+Title: {c['description']}
+
+Description:
+{c['text']}
+"""
+
+        prompt += """
+Instructions:
+- Choose ONLY from the candidate codes above
+- Use the prior score only as a hint, not as a decision rule
+- Be precise and strict
+- If multiple codes are similar, prefer the most specific (detailed) one
+
+Return ONLY valid JSON:
+
+{
+  "best_code": "...",
+  "alternatives": ["...", "..."],
+  "reason": "short explanation"
+}
+"""
+
+        return prompt
+
+    def rerank(self, label: str, candidates: list, top1_code: str, top1_desc: str) -> dict:
+        prompt = self.build_prompt(label, candidates, top1_code, top1_desc)
+
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=prompt,
+        )
+
+        text = response.text.strip()
+
+        # try safe JSON parsing
+        try:
+            json_start = text.find("{")
+            json_end = text.rfind("}") + 1
+
+            parsed = safe_parse_json(text)
+
+            if parsed is None:
+                return {
+                    "best_code": None,
+                    "alternatives": [],
+                    "raw": text,
+                }
+
+            return parsed
+
+        except Exception:
+            return {
+                "best_code": None,
+                "alternatives": [],
+                "raw": text,
+            }
+
 @dataclass
 class Prediction:
     code: str
@@ -357,6 +489,7 @@ print("✅ Utility functions ready")
 # -----------------------------
 class OENACEClassifier:
     def __init__(self, config: Optional[OENACEConfig] = None) -> None:
+        self.gemini = GeminiReranker()
         self.config = config or OENACEConfig()
         self.use_e5_prefix = "e5" in self.config.model_name.lower()
 
@@ -377,6 +510,160 @@ class OENACEClassifier:
         self.codes: List[str] = []
 
         self._score_cache: Dict[str, pd.DataFrame] = {}
+
+    def _prepare_llm_candidates(self, ranked: pd.DataFrame, top_k: int = 5):
+        top = ranked.head(top_k)
+
+        candidates = []
+
+        for _, row in top.iterrows():
+            code = row["code"]
+
+            candidates.append({
+                "code": code,
+                "description": self.code_to_desc.get(code, ""),
+                "text": self.code_docs[self.code_docs["code"] == code]["text"].iloc[0],
+                "score": float(row["final_score"]),
+            })
+
+        return candidates
+
+    def _build_batch_prompt(self, batch_data: list) -> str:
+        prompt = """
+    You are an expert in ÖNACE 2025 classification.
+
+    Task:
+    For EACH item:
+    - Choose the BEST matching code
+    - You MUST choose from the candidates only
+    - Be strict and precise
+    - Prefer the most specific code
+
+    Return ONLY valid JSON (list of objects):
+
+    [
+    { "id": 0, "best_code": "...", "alternatives": ["...", "..."] }
+    ]
+
+    ITEMS:
+    """
+
+        for item in batch_data:
+            prompt += f"\n\nID: {item['id']}"
+            prompt += f"\nLabel: \"{item['label']}\""
+            prompt += "\nCandidates:"
+
+            for c in item["candidates"]:
+                prompt += f"\n- {c['code']} | {c['description']}"
+
+        return prompt
+
+    def predict_batch_with_llm(self, labels: list[str], top_k: int = 5):
+
+        batch_data = []
+
+        for i, label in enumerate(labels):
+            ranked = self.score_all_codes(label)
+            candidates = self._prepare_llm_candidates(ranked, top_k=top_k)
+
+            batch_data.append({
+                "id": i,
+                "label": label,
+                "candidates": candidates
+            })
+
+        prompt = self._build_batch_prompt(batch_data)
+
+        try:
+            response = self.gemini.client.models.generate_content(
+                model=self.gemini.model,
+                contents=prompt,
+            )
+
+            text = response.text.strip()
+
+            parsed = safe_parse_json(text)
+
+            if parsed is None:
+                raise ValueError("Invalid JSON from LLM")
+
+            results = parsed
+
+            return results
+
+        except Exception as e:
+            print("⚠️ Batch Gemini failed:", e)
+
+            # ✅ fallback for ALL
+            return [
+                {
+                    "id": item["id"],
+                    "best_code": item["candidates"][0]["code"],
+                    "alternatives": [
+                        c["code"] for c in item["candidates"][1:3]
+                    ],
+                }
+                for item in batch_data
+            ]
+
+    def is_uncertain(self, ranked: pd.DataFrame) -> bool:
+        top1 = ranked.iloc[0]["final_score"]
+        top2 = ranked.iloc[1]["final_score"]
+
+        margin = top1 - top2
+
+        return margin < 0.08   # ✅ tune this (0.05–0.12 sweet spot)
+    
+    def predict_with_llm(self, label: str, top_k: int = 5):
+        ranked = self.score_all_codes(label)
+
+        if not self.is_uncertain(ranked):
+            return {
+                "label": label,
+                "best_code": ranked.iloc[0]["code"],
+                "alternatives": ranked.iloc[1:3]["code"].tolist(),
+                "reason": "high_confidence_model"
+            }
+
+        top1_code = ranked.iloc[0]["code"]
+        top1_desc = ranked.iloc[0]["description"]
+
+        candidates = self._prepare_llm_candidates(ranked, top_k=top_k)
+
+        print("🔵 Calling Gemini...")
+
+        llm_result = self.gemini.rerank(label, candidates, top1_code, top1_desc)
+
+        best_code = llm_result.get("best_code")
+
+        valid_codes = [c["code"] for c in candidates]
+
+        if best_code not in valid_codes:
+            best_code = valid_codes[0]  # fallback to top Python candidate
+        
+        alts = llm_result.get("alternatives", [])
+        alts = [a for a in alts if a in valid_codes and a != best_code]
+
+        # fallback falls LLM ausfällt
+        if not best_code:
+            fallback = ranked.iloc[0]
+            return {
+                "label": label,
+                "best_code": fallback["code"],
+                "alternatives": alts,
+                "reason": "fallback_to_model"
+            }
+
+        bonus = 0.25
+        ranked.loc[ranked["code"] == best_code, "final_score"] += bonus
+
+        return {
+            "label": label,
+            "best_code": best_code,
+            "alternatives": alts,
+            "reason": llm_result.get("reason", "")
+        }
+
 
     def clear_cache(self) -> None:
         self._score_cache = {}
@@ -803,20 +1090,42 @@ class OENACEClassifier:
         correct_1_running = 0
         correct_3_running = 0
 
+        labels = eval_df["raw_text"].tolist()
+
+        print("🚀 Starting evaluation...")
+
+        # ✅ REAL LLM call (no manual loop, no broken IDs)
+        all_results = self.predict_batch_with_llm(labels)
+
         for idx, (_, row) in enumerate(iterable, start=1):
-            label = row["text"]
+            label = row["raw_text"]
             true_code = row["code"]
 
-            ranked = self.score_all_codes(label)
-            top5 = ranked.head(5).copy()
-            true_match = ranked[ranked["code"] == true_code]
+            r = all_results[idx - 1] if idx - 1 < len(all_results) else {}
 
-            true_rank = int(true_match["rank"].iloc[0]) if not true_match.empty else None
-            true_score = float(true_match["final_score"].iloc[0]) if not true_match.empty else 0.0
+            best = r.get("best_code")
+            alts = r.get("alternatives", [])
 
-            pred_codes = top5["code"].tolist()
-            pred_scores = top5["final_score"].tolist()
+            pred_codes = [best] + alts
+            pred_codes = [c for c in pred_codes if c is not None]
+            pred_codes = pred_codes[:5]
 
+            pred_codes = [c for c in pred_codes if c is not None]
+
+            # ensure length (pad if needed)
+            pred_codes = pred_codes[:5]
+
+            pred_scores = [1.0 / (i + 1) for i in range(len(pred_codes))]  # fake scores for compatibility
+
+            # determine rank of true label
+            if true_code in pred_codes:
+                true_rank = pred_codes.index(true_code) + 1
+                true_score = pred_scores[true_rank - 1]
+            else:
+                true_rank = None
+                true_score = 0.0
+
+            # unpack for compatibility
             pred_1_code = pred_codes[0] if len(pred_codes) >= 1 else None
             pred_2_code = pred_codes[1] if len(pred_codes) >= 2 else None
             pred_3_code = pred_codes[2] if len(pred_codes) >= 3 else None
@@ -885,23 +1194,7 @@ class OENACEClassifier:
                 print("\n" + "=" * 100)
                 print("TEXT:", label)
                 print("TRUE:", true_code, self.code_to_desc.get(true_code, ""))
-                print("TOP-5:")
-                print(
-                    top5[
-                        [
-                            "rank",
-                            "code",
-                            "description",
-                            "final_score",
-                            "base_score",
-                            "dense_score",
-                            "tfidf_score",
-                            "example_score",
-                            "rerank_score",
-                            "rule_score",
-                        ]
-                    ].to_string(index=False)
-                )
+                print("TOP-3 (LLM):", pred_codes[:3])
 
         if progress is not None:
             progress.close()
@@ -999,18 +1292,22 @@ class OENACEClassifier:
             raise ValueError(f"Input file must contain column '{label_column}'.")
 
         rows = []
+
         for label in data[label_column].fillna("").astype(str).tolist():
-            pred = self.predict_top_k(label, k=3)["predictions"]
-            row = {}
-            for i, item in enumerate(pred, start=1):
-                row[f"pred_{i}_code"] = item["code"]
-                row[f"pred_{i}_description"] = item["description"]
-                row[f"pred_{i}_score"] = float(item["score"])
-                row[f"pred_{i}_dense_score"] = float(item["dense_score"])
-                row[f"pred_{i}_tfidf_score"] = float(item["tfidf_score"])
-                row[f"pred_{i}_example_score"] = float(item["example_score"])
-                row[f"pred_{i}_rerank_score"] = float(item["rerank_score"])
-                row[f"pred_{i}_rule_score"] = float(item["rule_score"])
+            result = self.predict_with_llm(label)
+
+            best = result.get("best_code")
+            alts = result.get("alternatives", [])
+
+            pred_codes = [best] + alts
+            pred_codes = pred_codes[:3] + [None] * (3 - len(pred_codes))
+
+            row = {
+                "pred_1_code": pred_codes[0],
+                "pred_2_code": pred_codes[1],
+                "pred_3_code": pred_codes[2],
+            }
+
             rows.append(row)
 
         return pd.concat([data.reset_index(drop=True), pd.DataFrame(rows)], axis=1)
@@ -1168,9 +1465,8 @@ examples = [
 for e in examples:
     print("\n" + "=" * 80)
     print("INPUT:", e)
-    result = clf.predict_top_k(e, k=3)
-    for p in result["predictions"]:
-        print(p)
+    result = clf.predict_with_llm(e)
+    print(result)
 
 # %%
 # -----------------------------
@@ -1185,7 +1481,7 @@ full_ranking.head(10)
 # Predict one custom label
 # -----------------------------
 label = "Hotel with restaurant and spa services"
-result = clf.predict_top_k(label, k=3)
+result = clf.predict_with_llm(label)
 result
 
 # %%
